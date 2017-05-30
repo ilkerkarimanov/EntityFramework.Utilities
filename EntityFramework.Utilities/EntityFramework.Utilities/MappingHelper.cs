@@ -297,18 +297,19 @@ namespace EntityFramework.Utilities
 
     public static class EfMappingFactory
     {
-        private static Dictionary<Type, EfMapping> cache = new Dictionary<Type, EfMapping>();
+        //private static Dictionary<Type, EfMapping> cache = new Dictionary<Type, EfMapping>();
 
         public static EfMapping GetMappingsForContext(DbContext context)
         {
-            var type = context.GetType();
-            EfMapping mapping;
-            if (!cache.TryGetValue(type, out mapping))
-            {
-                mapping = new EfMapping(context);
-                cache.Add(type, mapping);
-            }
-            return mapping;
+            //var type = context.GetType();
+            //EfMapping mapping;
+            //if (!cache.TryGetValue(type, out mapping))
+            //{
+            //    mapping = new EfMapping(context);
+            //    cache.Add(type, mapping);
+            //}
+            //return mapping;
+            return new EfMapping(context);
         }
 
     }
