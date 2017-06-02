@@ -126,12 +126,7 @@ namespace EntityFramework.Utilities
                 throw;
             }
             finally
-            {
-                using (var dCommand = new SqlCommand(string.Format("DROP table {0}.[{1}]", schema, tempTableName), con))
-                {
-                    dCommand.ExecuteNonQuery();
-                }
-            }
+            {}
             
         }
 
