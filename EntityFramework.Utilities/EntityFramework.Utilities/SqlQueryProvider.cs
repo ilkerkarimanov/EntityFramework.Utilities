@@ -109,17 +109,29 @@ namespace EntityFramework.Utilities
                      [{1}] TEMP
                 ON 
                     {2}", tableName, tempTableName, filter, setters);
-
-            using (var createCommand = new SqlCommand(str, con))
-            using (var mCommand = new SqlCommand(mergeCommand, con))
-            using (var dCommand = new SqlCommand(string.Format("DROP table {0}.[{1}]", schema, tempTableName), con))
+            try
             {
-                createCommand.ExecuteNonQuery();
-                InsertItems(items, schema, tempTableName, filtered, storeConnection, batchSize);
-                mCommand.ExecuteNonQuery();
-                dCommand.ExecuteNonQuery();
+                using (var createCommand = new SqlCommand(str, con))
+                using (var mCommand = new SqlCommand(mergeCommand, con))
+                using (var dCommand = new SqlCommand(string.Format("DROP table {0}.[{1}]", schema, tempTableName), con))
+                {
+                    createCommand.ExecuteNonQuery();
+                    InsertItems(items, schema, tempTableName, filtered, storeConnection, batchSize);
+                    mCommand.ExecuteNonQuery();
+                    dCommand.ExecuteNonQuery();
+                }
             }
-
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                using (var dCommand = new SqlCommand(string.Format("DROP table {0}.[{1}]", schema, tempTableName), con))
+                {
+                    dCommand.ExecuteNonQuery();
+                }
+            }
             
         }
 
